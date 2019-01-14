@@ -9,7 +9,7 @@ from app import db
 from flask import redirect
 from flask import url_for
 
-products = Blueprint('products', __name__, template_folder='templates')
+products = Blueprint('product', __name__, template_folder='templates')
 
 
 @products.route('/create',methods=['POST','GET'])
@@ -31,6 +31,20 @@ def create_product():
         form = ProductForm()
         return render_template('products/create_product.html', form=form)
 
+
+@products.route('/edit/<id>', methods=['POST','GET'])
+def edit_product(id):
+    product = Products.query.filter(Products.id==id).first()
+
+    if request.method == 'POST':
+        form =ProductForm(formdata=request.form ,obj=product)
+        form.populate_obj(product)
+        db.session.commit()
+
+        return redirect(url_for('products.index'))
+
+    form = ProductForm(obj=product)
+    return render_template('products/edit_product.html',product=product , form=form)
 
 
 @products.route('/')

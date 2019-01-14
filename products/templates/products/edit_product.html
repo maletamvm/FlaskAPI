@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="content-section">
-        <form method="POST" action="{{url_for('product.create_product')}}">
+        <form method="POST" action="{{url_for('product.edit_product', id=product.id)}}">
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">{{ legend }}</legend>
                 <div class="form-group">
@@ -44,7 +44,7 @@
                     {% endif %}
                 </div>
             </fieldset>
-        <button type="submit" class="btn btn-info">Create</button>
+        <button type="submit" class="btn btn-info">Edit</button>
         </form>
     </div>
 {% endblock content %}
