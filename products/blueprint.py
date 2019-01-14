@@ -9,10 +9,15 @@ from app import db
 from flask import redirect
 from flask import url_for
 
+from flask import jsonify
+
+from flask_security import login_required
+
 products = Blueprint('product', __name__, template_folder='templates')
 
 
 @products.route('/create',methods=['POST','GET'])
+@login_required
 def create_product():
 
     if request.method == 'POST' :
@@ -33,6 +38,7 @@ def create_product():
 
 
 @products.route('/edit/<id>', methods=['POST','GET'])
+@login_required
 def edit_product(id):
     product = Products.query.filter(Products.id==id).first()
 
@@ -52,7 +58,33 @@ def index():
     products = Products.query.all()
     return render_template('products/index.html',products=products)
 
+@products.route('/all')
+def all_for_api():
+    products = Products.query.all()
+    result = []
+    for product in products:
+        result.append({
+            'id': product.id,
+            'title': product.name,
+            'description': product.description,
+            'count': product.items_count,
+            'type': product.type.name
+        })
+
+    # return render_template('products/index.html',products=products)
+    return jsonify(result)
+
+
 @products.route('/<id>')
 def product_detail(id):
-    product = Products.query.filter(Products.id==id).first()
-    return render_template('products/product_detail.html',product=product.type)
+    result = []
+    product = Products.query.filter(Products.id == id).first()
+    result.append({
+        'id': product.id,
+        'title': product.name,
+        'description': product.description,
+        'count': product.items_count
+    })
+
+    # return render_template('products/product_detail.html',product=product.type)
+    return jsonify(result)

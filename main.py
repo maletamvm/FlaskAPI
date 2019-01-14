@@ -5,7 +5,7 @@ from products.blueprint import products
 
 import viev
 
-app.register_blueprint(products, url_prefix='/products')
+app.register_blueprint(products, url_prefix='/product')
 
 if __name__=='__main__':
     app.run()
