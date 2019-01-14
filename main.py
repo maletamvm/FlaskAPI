@@ -1,5 +1,5 @@
-from API.app import app
-from API.app import db
+from app import app
+from app import db
 
 from products.blueprint import products
 

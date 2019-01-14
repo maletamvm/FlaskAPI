@@ -13,4 +13,4 @@ def index():
 @products.route('/<id>')
 def product_detail(id):
     product = Products.query.filter(Products.id==id).first()
-    return render_template('products/product_detail.html',product=product)
+    return render_template('products/product_detail.html',product=product.type)
